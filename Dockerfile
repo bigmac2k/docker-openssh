@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-RUN apk add --no-cache openssh-server tini bash
+RUN apk add --no-cache openssh-server openssh-sftp-server tini bash
 
 RUN set -ex; \
     sed -i 's/#PasswordAuthentication.*/PasswordAuthentication no/;s/#PermitRootLogin.*/PermitRootLogin without-password/' /etc/ssh/sshd_config; \
