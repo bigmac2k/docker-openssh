@@ -29,19 +29,25 @@ if [ -n "${HOST_KEY_RSA}" ]; then
 	echo Setting RSA host key
 	echo "${HOST_KEY_RSA}" >> /etc/ssh/ssh_host_rsa_key
 	chmod 600 /etc/ssh/ssh_host_rsa_key
-	echo 'HostKey /etc/ssh/ssh_host_rsa_key' >> /etc/ssh/sshd_config
+	if ! grep -qE '^HostKey /etc/ssh/ssh_host_rsa_key$' /etc/ssh/sshd_config; then
+	  echo 'HostKey /etc/ssh/ssh_host_rsa_key' >> /etc/ssh/sshd_config
+	fi
 fi
 if [ -n "${HOST_KEY_ECDSA}" ]; then
 	echo Setting ECDSA host key
 	echo "${HOST_KEY_ECDSA}" >> /etc/ssh/ssh_host_ecdsa_key
 	chmod 600 /etc/ssh/ssh_host_ecdsa_key
-	echo 'HostKey /etc/ssh/ssh_host_ecdsa_key' >> /etc/ssh/sshd_config
+	if ! grep -qE '^HostKey /etc/ssh/ssh_host_ecdsa$' /etc/ssh/sshd_config; then
+	  echo 'HostKey /etc/ssh/ssh_host_ecdsa_key' >> /etc/ssh/sshd_config
+	fi
 fi
 if [ -n "${HOST_KEY_ED25519}" ]; then
 	echo Setting ED25519 host key
 	echo "${HOST_KEY_ED25519}" >> /etc/ssh/ssh_host_ed25519_key
 	chmod 600 /etc/ssh/ssh_host_ed25519_key
-	echo 'HostKey /etc/ssh/ssh_host_ed25519_key' >> /etc/ssh/sshd_config
+	if ! grep -qE '^HostKey /etc/ssh/ssh_host_ed25519$' /etc/ssh/sshd_config; then
+	  echo 'HostKey /etc/ssh/ssh_host_ed25519_key' >> /etc/ssh/sshd_config
+	fi
 fi
 
 for I in $(find /home -maxdepth 1 -mindepth 1 -type d | sed 's;^/home/;;'); do
